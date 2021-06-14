@@ -1,4 +1,5 @@
 import os
+import json
 import tkinter as tk
 
 from helpers import clear_screen
@@ -37,3 +38,36 @@ def render_register(screen: tk.Tk, on_success):
         text='Submit',
         command=on_click
     ).grid(row=len(inputs), column=1)
+
+
+def render_login(screen: tk.Tk, on_success):
+    clear_screen(screen)
+    username = tk.Entry(screen)
+    username.grid(row=0, column=0)
+    password = tk.Entry(screen)
+    password.grid(row=1, column=0)
+
+    def on_click():
+        if login(username.get(), password.get()):
+            on_success(screen)
+        else:
+            tk.Label(screen, text='Invalid username or password', foreground='red').grid(row=3, column=0)
+
+    tk.Button(
+        screen, text='Login',
+        command=on_click
+    ).grid(row=2, column=0)
+
+
+def login(username, password):
+    with open(os.path.join('db', 'user_store.txt')) as f:
+        for row in f:
+            user = json.loads(row)
+            if user['username'] == username and user['password'] == password:
+                with open(os.path.join('db', 'current_user.txt'), 'w') as f:
+                    f.write(json.dumps(user))
+
+                return True
+
+
+    return False
