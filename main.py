@@ -1,19 +1,23 @@
 import tkinter as tk
 
-def clear_screen(screen: tk.Tk):
-    for element in screen.grid_slaves():
-        element.destroy()
+from authentication import render_register
+from helpers import clear_screen
+import os
+
+
+def render_main_screen(screen: tk.Tk):
+    tk.Button(screen, text='Login', background='green', foreground='white', command=lambda: print('Clicked')).grid(row=0, column=0)
+    tk.Button(
+        screen, text='Register', foreground='black', background='yellow',
+        command=lambda: render_register(screen, on_success=render_main_screen)
+    ).grid(row=0, column=1)
+
 
 if __name__ == '__main__':
     window = tk.Tk()
     window.title = 'My App'
     window.geometry('600x600')
 
-    tk.Button(window, text='Login', background='green', foreground='white', command=lambda: print('Clicked')).grid(row=0, column=0)
-    tk.Button(window, text='Register', foreground='black', background='yellow', command=lambda: print('Clicked')).grid(row=0, column=1)
-
-    tk.Button(window, text='Clear screen', command=lambda: clear_screen(window)).grid(row=1, column=1)
+    render_main_screen(window)
 
     window.mainloop()
-
-
