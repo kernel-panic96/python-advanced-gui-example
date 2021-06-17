@@ -44,7 +44,7 @@ def render_login(screen: tk.Tk, on_success):
     clear_screen(screen)
     username = tk.Entry(screen)
     username.grid(row=0, column=0)
-    password = tk.Entry(screen)
+    password = tk.Entry(screen, show='*')
     password.grid(row=1, column=0)
 
     def on_click():
